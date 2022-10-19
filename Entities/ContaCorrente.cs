@@ -7,17 +7,17 @@ namespace Proje1.Entities
         public double Saldo { get; set; }
         public double Tarifa { get; set; }
 
-        public ContaCorrente(double saldo, double tarifa)
-        {
-            Saldo = saldo;
-            Tarifa = tarifa;
-        }
-
         public ContaCorrente(double saldo)
         {
             Saldo = saldo;
         }
 
+        public ContaCorrente(double saldo, double tarifa)
+        {
+            Saldo = saldo;
+            Tarifa = tarifa;
+        }
+                
         public virtual void Depositar(double valor)
         {
             Saldo += valor;
@@ -25,8 +25,8 @@ namespace Proje1.Entities
 
         public virtual void Sacar(double valor)
         {
-            Saldo = Saldo - valor - Tarifa;
-            if(Saldo > valor)
+            Saldo -= Tarifa + valor;
+            if(Saldo < 0)
             {
                 throw new ArgumentException("Saldo Insuficiente.");
             }

@@ -4,27 +4,44 @@ using Proje1.Services;
 
 try
 {
-    ContaCorrente cc = new(0.0,20.00);
-    cc.Depositar(250.00);
-    Console.WriteLine(cc.GetSaldo().ToString("F2", CultureInfo.InvariantCulture));
-    
-    cc.Sacar(200.00);
-    Console.WriteLine(cc.GetSaldo().ToString("F2", CultureInfo.InvariantCulture));
-
-    Console.WriteLine();
-
-    ContaPoupança cp = new(200.00);
-    cp.Sacar(150.00);
-    Console.WriteLine(cp.GetSaldo());
-
-    cp.Depositar(40.00);
-    Console.WriteLine(cp.GetSaldo());
-
-    Console.WriteLine();
-    GeradordeExtratos ge = new();
-    Console.WriteLine(ge.GerarExtrato(cc));
-    
-}catch(Exception e)
+    Console.Write("Saldo Inicial da Conta: ");
+    double saldo = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+    Console.Write("Digite o valor do deposito: ");
+    double deposito = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+    Console.Write("Sera feito algum saque(s/n)? ");
+    char s = char.Parse(Console.ReadLine());
+    Console.Write("Digite o tipo de conta(Corrente ou Poupança(c/p)): ");
+    char c = char.Parse(Console.ReadLine());
+    if(c == 'c')
+    {
+        Console.Write("Qual o valor da tarifa por saque: ");
+        double tarifa = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+        ContaCorrente cc = new(saldo,tarifa);
+        cc.Depositar(deposito);
+        if (s == 's')
+        {
+            Console.Write("Qual o valor do saque: ");
+            double saque = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            cc.Sacar(saque);
+        }
+        GeradordeExtratos ge = new();
+        Console.WriteLine("Saldo: " + ge.GerarExtrato(cc));
+    }
+    else
+    {
+        ContaPoupança p = new(saldo);
+        p.Depositar(deposito);
+        if (s == 's')
+        {
+            Console.Write("Qual o valor do saque: ");
+            double saque = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            p.Sacar(saque);
+        }
+        GeradordeExtratos ge = new();
+        Console.WriteLine("Saldo: " + ge.GerarExtrato(p));
+    }
+}
+catch(Exception e)
 {
     Console.WriteLine("An error occurred: " + e.Message);
 }
